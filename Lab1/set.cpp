@@ -494,7 +494,13 @@ void Set<T>::clear()
 template<typename T>
 bool Set<T>::operator<=(const Set& b) const
 {
-    //ADD CODE
+    Set<T> interSet = this->_intersection(b);
+
+    if(interSet == *this)
+    {
+        return true;
+    }
+
     return false; //delete this code
 }
 
@@ -504,19 +510,29 @@ bool Set<T>::operator<=(const Set& b) const
 template<typename T>
 bool Set<T>::operator==(const Set& b) const
 {
-    Node *tempNode = b.head->next;
-    Node *sourceNode = head->next;
-    bool flag = true;
 
-    while((tempNode != b.tail) && (sourceNode != tail))
+     if(b.cardinality() != this->cardinality())
+        return false;
+
+    Set<T> interSet = this->_intersection(b);
+
+    Node *tmp = head->next;
+    Node *tmp2 = interSet.head->next;
+
+    while(tmp != tail || tmp2 != interSet.tail)
     {
-        if(tempNode->value != sourceNode->value)
-            flag = false;
-        tempNode = tempNode->next;
-        sourceNode = sourceNode->next;
+        if(tmp->value == tmp2->value)
+        {
+            tmp = tmp->next;
+            tmp2 = tmp2->next;
+        }
+        else
+        {
+            return false;
+        }
     }
 
-    return flag; //delete this code
+    return true; //delete this code
 }
 
 
@@ -525,7 +541,9 @@ bool Set<T>::operator==(const Set& b) const
 template<typename T>
 bool Set<T>::operator<(const Set& b) const
 {
-    //ADD CODE
+    if(b.cardinality() > this->cardinality() && *this <= b)
+        return true;
+
     return false; //delete this code
 }
 
@@ -633,20 +651,26 @@ Set<T> Set<T>::_intersection(const Set& b) const
 {
 
     Set<T> newSet;
-    Node* tempNode = head->next;
-    Node *tmp3 = b.head->next;
-    while (tempNode->next)
+    Node* tmp3 = head->next;
+    Node *tempNode = b.head->next;
+    Node *insertSet = newSet.head->next;
+
+    while ((tempNode != b.tail) && (tmp3 != tail))
     {
-        Node *tmp = b.head->next;
-        while (tmp->next)
+        if(tmp3->value == tempNode->value)
         {
-            if (tempNode->value == tmp->value)
-            {
-               newSet.insert(newSet.tail, tmp->value);
-            }
-            tmp=tmp->next;
+            newSet.insert(insertSet, tmp3->value);
+            tmp3 = tmp3->next;
+            tempNode = tempNode->next;
         }
-        tempNode=tempNode->next;
+        else if(tmp3->value < tempNode->value)
+        {
+            tmp3 = tmp3->next;
+        }
+        else
+        {
+            tempNode = tempNode->next;
+        }
     }
 
     return newSet; //delete this code
@@ -660,24 +684,32 @@ template<typename T>
 Set<T> Set<T>::_difference(const Set& b) const
 {
     Set<T> newSet;
-    Node* tempNode = head->next;
-    Node *tmp3 = b.head->next;
-    bool test = false;
-    while (tempNode->next)
+    Node* tmp = b.head->next;
+    Node *tmp2 = head->next;
+
+    Node* newSetPointer = newSet.head->next;
+    while ((tmp2 != tail) && (tmp != b.tail))
     {
-        Node *tmp = b.head->next;
-        test = false;
-        while (tmp->next)
+        if (tmp->value == tmp2->value)
         {
-            if (tempNode->value == tmp->value)
-            {
-               test = true;
-            }
-            tmp=tmp->next;
+            tmp = tmp->next;
+            tmp2 = tmp2->next;
         }
-        if(!test)
-            newSet.insert(newSet.tail, tempNode->value);
-        tempNode=tempNode->next;
+        else if(tmp2->value < tmp->value)
+        {
+            newSet.insert(newSetPointer, tmp2->value);
+            tmp2 = tmp2->next;
+        }
+        else
+        {
+            tmp = tmp->next;
+        }
+
+    }
+    while (tmp2 != tail)
+    {
+        newSet.insert(newSetPointer, tmp2->value);
+        tmp2 = tmp2->next;
     }
 
     return newSet; //delete this code
