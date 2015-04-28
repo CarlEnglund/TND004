@@ -504,8 +504,19 @@ bool Set<T>::operator<=(const Set& b) const
 template<typename T>
 bool Set<T>::operator==(const Set& b) const
 {
-    //ADD CODE
-    return false; //delete this code
+    Node *tempNode = b.head->next;
+    Node *sourceNode = head->next;
+    bool flag = true;
+
+    while((tempNode != b.tail) && (sourceNode != tail))
+    {
+        if(tempNode->value != sourceNode->value)
+            flag = false;
+        tempNode = tempNode->next;
+        sourceNode = sourceNode->next;
+    }
+
+    return flag; //delete this code
 }
 
 

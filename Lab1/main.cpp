@@ -111,11 +111,11 @@ int main()
     * Overloaded operators: equality, subset, and        *
     * strict subset                                      *
     ******************************************************/
- /*   cout << "\nTEST PHASE 6: equality, subset, strict subset\n\n";
+   cout << "\nTEST PHASE 6: equality, subset, strict subset\n\n";
 
     cout << "S2 == S3 ? " << (S2 == S3 ? 'T' : 'F') << endl;
-    cout << "S2 <= S3 ? " << (S2 <= S3 ? 'T' : 'F') << endl;
-    cout << "S2 <  S3 ? " << (S2 <  S3 ? 'T' : 'F') << endl;
+ //   cout << "S2 <= S3 ? " << (S2 <= S3 ? 'T' : 'F') << endl;
+   // cout << "S2 <  S3 ? " << (S2 <  S3 ? 'T' : 'F') << endl;
 
     /*****************************************************
     * TEST PHASE 7                                       *
