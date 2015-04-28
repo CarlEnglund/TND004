@@ -74,7 +74,23 @@ double HashTable::loadFactor() const
 // IMPLEMENT
 int HashTable::find(string key) const
 {
-    return NOT_FOUND; //to be deleted
+  
+  int index = h(key, size);
+  
+  //If it's a nullptr it has been deleted(?).
+  while(hTable[index] != nullptr)
+  {
+
+    if (hTable[index]->key == key)
+      return hTable[index]->value;
+    
+    index++;
+
+    //Index to big.
+    if(index == size)
+      index = 0;
+  }
+  return NOT_FOUND; //to be deleted
 }
 
 
@@ -85,6 +101,39 @@ int HashTable::find(string key) const
 void HashTable::insert(string key, int v)
 {
 
+  int index = h(key, size); // uses hash function my_hash to find index
+
+    if (find(key) != NOT_FOUND) // if found, replace with v
+    {
+      hTable[index]->value = v;
+    }
+    
+    else
+    {
+
+      Item* newItem = new Item(key, v);
+      
+      while (hTable[index] != nullptr)
+      {
+        //primarily try to insert at a deleted position
+        if (hTable[index] == Deleted_Item::get_Item())
+        {
+          break;
+        }
+      
+        index++;
+        std::cout << index << " ";
+      }
+      
+      hTable[index] = newItem; 
+      nItems++;
+
+      if (loadFactor() >= MAX_LOAD_FACTOR)
+      {
+        reHash();
+      }
+
+    }
 }
 
 
