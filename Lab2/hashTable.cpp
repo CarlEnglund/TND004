@@ -74,7 +74,7 @@ double HashTable::loadFactor() const
 // IMPLEMENT
 int HashTable::find(string key) const
 {
-  
+
   int index = h(key, size);
   
   //If it's a nullptr it has been deleted(?).
@@ -84,12 +84,13 @@ int HashTable::find(string key) const
     if (hTable[index]->key == key)
       return hTable[index]->value;
     
-    index++;
 
+    index++;
     //Index to big.
     if(index == size)
       index = 0;
   }
+
   return NOT_FOUND; //to be deleted
 }
 
@@ -103,37 +104,40 @@ void HashTable::insert(string key, int v)
 
   int index = h(key, size); // uses hash function my_hash to find index
 
-    if (find(key) != NOT_FOUND) // if found, replace with v
+  if (find(key) != NOT_FOUND) // if found, replace with v
+  {
+    hTable[index]->value = v;
+  }
+  
+  else
+  {
+
+    Item* newItem = new Item(key, v);
+    
+    while (hTable[index] != nullptr)
     {
-      hTable[index]->value = v;
+      //primarily try to insert at a deleted position
+      if (hTable[index] == Deleted_Item::get_Item())
+      {
+        break;
+      }
+    
+      index++;
+
+      if(index == size)
+        index = 0;
+
     }
     
-    else
+    hTable[index] = newItem; 
+    nItems++;
+
+    
+    if (loadFactor() >= MAX_LOAD_FACTOR)
     {
-
-      Item* newItem = new Item(key, v);
-      
-      while (hTable[index] != nullptr)
-      {
-        //primarily try to insert at a deleted position
-        if (hTable[index] == Deleted_Item::get_Item())
-        {
-          break;
-        }
-      
-        index++;
-        std::cout << index << " ";
-      }
-      
-      hTable[index] = newItem; 
-      nItems++;
-
-      if (loadFactor() >= MAX_LOAD_FACTOR)
-      {
-        reHash();
-      }
-
+      reHash();
     }
+  }
 }
 
 
@@ -143,7 +147,25 @@ void HashTable::insert(string key, int v)
 // IMPLEMENT
 bool HashTable::remove(string key)
 {
-    return true; //to be deleted
+    int index = h(key, size);
+
+    if(find(key) != NOT_FOUND)
+      return false;
+
+    while(hTable[index]->key != key)
+    {
+      
+      if(index == size)
+        index = 0;
+
+      index++;
+    }
+
+    delete hTable[index];
+    hTable[index] = Deleted_Item::get_Item();
+    nItems--;
+
+    return true;
 }
 
 
@@ -179,7 +201,20 @@ void HashTable::display(ostream& os)
 // IMPLEMENT
 ostream& operator<<(ostream& os, const HashTable& T)
 {
-    return os;
+  int index = 0;
+
+  while(index < T.size)
+  {
+    if(T.hTable[index] != nullptr)
+    {
+      os << "value: " << T.hTable[index]->value;
+      os << endl;
+      os << "key " << T.hTable[index]->key;
+    }
+    index++;
+  }
+
+  return os;
 }
 
 //Private member functions
@@ -188,5 +223,23 @@ ostream& operator<<(ostream& os, const HashTable& T)
 // IMPLEMENT
 void HashTable::reHash()
 {
+   HashTable newHash(nextPrime(2*size), h); 
+
+    std::cout << "Rehashing... new size is " << nextPrime(2*size) << std::endl;
+
+    for(int i = 0; i < size; i++){
+
+        if(hTable[i] != nullptr && hTable[i]->value != NOT_FOUND){
+
+            newHash.insert(hTable[i]->key, hTable[i]->value);
+
+        }
+
+    }
+
+    std::swap(hTable, newHash.hTable);
+    std::swap(size, newHash.size);
+
+
 
 }
