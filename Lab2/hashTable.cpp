@@ -53,12 +53,10 @@ HashTable::HashTable(int table_size, HASH f)
 // IMPLEMENT
 HashTable::~HashTable()
 {
-    for(int i = 0; i < size; i++)
-    {
-        delete []hTable;
+        delete hTable;
         size = 0;
         nItems = 0;
-    }
+    
 }
 
 
@@ -148,8 +146,8 @@ void HashTable::insert(string key, int v)
 bool HashTable::remove(string key)
 {
     int index = h(key, size);
-
-    if(find(key) != NOT_FOUND)
+    cout << "tju";
+    if(find(key) == NOT_FOUND)
       return false;
 
     while(hTable[index]->key != key)
