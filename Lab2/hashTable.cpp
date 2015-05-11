@@ -84,7 +84,7 @@ int HashTable::find(string key) const
     
 
     index++;
-    //Index to big.
+    //Index too big.
     if(index == size)
       index = 0;
   }
@@ -237,7 +237,23 @@ void HashTable::reHash()
 
     std::swap(hTable, newHash.hTable);
     std::swap(size, newHash.size);
-
-
-
 }
+//If k matches a key in the table, return reference to its value
+//if k does not match, insert new element
+int& HashTable::operator[](const string key)
+{
+  if (find(key) == NOT_FOUND)
+  {
+      insert(key, 0); // 0 i think?
+  }
+  int index = h(key, size);
+  while (hTable[index] != nullptr)
+  {
+    if (hTable[index]->key == key)
+    {
+      break;
+    }
+  }
+  return hTable[index]->value;
+}
+

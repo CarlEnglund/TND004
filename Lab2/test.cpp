@@ -39,7 +39,8 @@ int menu()
     cout << "2. Search" << endl;
     cout << "3. Delete" << endl;
     cout << "4. Dump table" << endl;
-    cout << "5. Exit" << endl;
+    cout << "5. Operator []" << endl;
+    cout << "6. Exit" << endl;
 
     cout << "Enter your choice: ";
 
@@ -107,8 +108,12 @@ int main()
         case 4:
             table.display(cout);
             break;
-
         case 5:
+            cout << "Enter a word: ";
+            cin >> key;
+            cout << "Value at key is: " << table[key] << endl;
+            break;
+        case 6:
             go = false;
             break;
 
