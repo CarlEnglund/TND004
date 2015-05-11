@@ -5,6 +5,11 @@
 
 const double MAX_LOAD_FACTOR = 0.5;
 
+//Linear probing: Search sequentially in the table until an empty position is found, starting at h(x)
+//The next position after the last (𝑀 − 1) is the first (0)
+//Used in find, remove, insert
+
+
 //Test if a number is prime
 bool isPrime( int n )
 {
@@ -84,7 +89,7 @@ int HashTable::find(string key) const
     
 
     index++;
-    //Index too big.
+    //next position after last is the first
     if(index == size)
       index = 0;
   }
@@ -121,7 +126,7 @@ void HashTable::insert(string key, int v)
       }
     
       index++;
-
+      //next position after last is the first
       if(index == size)
         index = 0;
 
@@ -152,7 +157,7 @@ bool HashTable::remove(string key)
 
     while(hTable[index]->key != key)
     {
-      
+      //next position after last is the first
       if(index == size)
         index = 0;
 
