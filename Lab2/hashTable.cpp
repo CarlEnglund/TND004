@@ -2,7 +2,7 @@
 #include <iomanip>
 
 #include "hashTable.h"
-
+#include <fstream>
 const double MAX_LOAD_FACTOR = 0.5;
 
 //Linear probing: Search sequentially in the table until an empty position is found, starting at h(x)
@@ -42,7 +42,7 @@ int nextPrime( int n )
 // Constructor
 // IMPLEMENT
 HashTable::HashTable(int table_size, HASH f)
-    : size(nextPrime(table_size)), h(f), nItems(0)
+    : size(nextPrime(table_size)), h(f), nItems(0), counter(0)
 {
 
     hTable = new Item*[size];
@@ -58,10 +58,16 @@ HashTable::HashTable(int table_size, HASH f)
 // IMPLEMENT
 HashTable::~HashTable()
 {
-        delete hTable;
+        for (int i = 0; i < size; i++)
+        {
+            if (!(Deleted_Item::get_Item()))
+            delete hTable[i];
+        }
+
+        delete[] hTable;
         size = 0;
         nItems = 0;
-    
+
 }
 
 
@@ -79,19 +85,19 @@ int HashTable::find(string key) const
 {
 
   int index = h(key, size);
-  
+
   //If it's a nullptr it has been deleted(?).
   while(hTable[index] != nullptr)
   {
 
     if (hTable[index]->key == key)
       return hTable[index]->value;
-    
+
+    //next position after last is the first
+    if(index == (size - 1))
+      index = 0;
 
     index++;
-    //next position after last is the first
-    if(index == size)
-      index = 0;
   }
 
   return NOT_FOUND; //to be deleted
@@ -109,14 +115,22 @@ void HashTable::insert(string key, int v)
 
   if (find(key) != NOT_FOUND) // if found, replace with v
   {
+    while(hTable[index]->key != key)
+    {
+
+        if(index == (size - 1))
+            index = 0;
+
+        index++;
+    }
     hTable[index]->value = v;
   }
-  
+
   else
   {
 
     Item* newItem = new Item(key, v);
-    
+
     while (hTable[index] != nullptr)
     {
       //primarily try to insert at a deleted position
@@ -124,18 +138,20 @@ void HashTable::insert(string key, int v)
       {
         break;
       }
-    
-      index++;
+
       //next position after last is the first
-      if(index == size)
+      if(index == (size - 1))
         index = 0;
 
+
+        index++;
+
     }
-    
-    hTable[index] = newItem; 
+
+    hTable[index] = newItem;
     nItems++;
 
-    
+
     if (loadFactor() >= MAX_LOAD_FACTOR)
     {
       reHash();
@@ -151,14 +167,13 @@ void HashTable::insert(string key, int v)
 bool HashTable::remove(string key)
 {
     int index = h(key, size);
-    cout << "tju";
     if(find(key) == NOT_FOUND)
       return false;
 
     while(hTable[index]->key != key)
     {
       //next position after last is the first
-      if(index == size)
+      if(index == (size-1))
         index = 0;
 
       index++;
@@ -170,7 +185,6 @@ bool HashTable::remove(string key)
 
     return true;
 }
-
 
 void HashTable::display(ostream& os)
 {
@@ -197,6 +211,23 @@ void HashTable::display(ostream& os)
     }
 
     os << endl;
+}
+void HashTable::displayFreq(ostream& os, int numbWords)
+{
+    os << "Number of words in the file: " << numbWords << endl;
+    os << "Number of unique words: " << nItems << endl;
+
+    for (int i = 0; i < size; ++i)
+    {
+        if (hTable[i] == nullptr || hTable[i] == Deleted_Item::get_Item())
+        {
+            continue;
+        }
+        else
+        {
+            os << "Key: " << setw(13) << left << hTable[i]->key << " Value: " << hTable[i]->value << endl;
+        }
+    }
 }
 
 
@@ -226,7 +257,7 @@ ostream& operator<<(ostream& os, const HashTable& T)
 // IMPLEMENT
 void HashTable::reHash()
 {
-   HashTable newHash(nextPrime(2*size), h); 
+   HashTable newHash(nextPrime(2*size), h);
 
     std::cout << "Rehashing... new size is " << nextPrime(2*size) << std::endl;
 
@@ -235,13 +266,14 @@ void HashTable::reHash()
         if(hTable[i] != nullptr && hTable[i]->value != NOT_FOUND){
 
             newHash.insert(hTable[i]->key, hTable[i]->value);
-
         }
 
     }
 
-    std::swap(hTable, newHash.hTable);
     std::swap(size, newHash.size);
+    std::swap(hTable, newHash.hTable);
+
+    std::swap(nItems, newHash.nItems);
 }
 //If k matches a key in the table, return reference to its value
 //if k does not match, insert new element
@@ -256,9 +288,19 @@ int& HashTable::operator[](const string key)
   {
     if (hTable[index]->key == key)
     {
-      break;
+       return hTable[index]->value;
     }
+
+    if (index == (size - 1))
+        index = 0;
+
+    index++;
   }
   return hTable[index]->value;
 }
+
+int HashTable::getCounter()
+ {
+     return counter;
+ }
 

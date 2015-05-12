@@ -7,12 +7,14 @@
 
 #include <iostream>
 #include <string>
-
+#include <fstream>
+#include <vector>
 #include "hashTable.h"
 
 using namespace std;
 
 //A simple hash function
+/*
 unsigned my_hash(string s, int tableSize)
 {
     unsigned hashVal = 0;
@@ -24,6 +26,56 @@ unsigned my_hash(string s, int tableSize)
 
     return hashVal;
 }
+*/
+unsigned my_hash(const string key, int tableSize)
+{
+    unsigned int hashVal = 0;
+    for (char ch : key)
+        hashVal = 37 * hashVal + ch;
+
+    return hashVal % tableSize;
+}
+
+void fixWords(string &s)
+{
+    string forbidden =".,!?:\"();";
+    string newWord = "";
+    bool test;
+    for (int i = 0; i < s.length(); i++)
+    {
+        test = false;
+        s[i] = tolower(s[i]);
+        for (int k = 0; k < forbidden.length(); k++)
+        {
+            if (s[i] == forbidden[k])
+            {
+                test = true;
+            }
+        }
+        if (!test) //if test is false, then assign char to the new word
+        {
+            newWord +=s[i];
+        }
+    }
+    s = newWord;
+
+}
+vector <string> readFile(string fileName)
+{
+    ifstream in;
+    in.open(fileName);
+    vector <string> wordVec;
+    string word;
+    while (in >> word)
+    {
+        fixWords(word);
+        wordVec.push_back(word);
+      //  cout << word;
+
+    }
+    return wordVec;
+}
+
 
 
 //Test the code
@@ -40,7 +92,9 @@ int menu()
     cout << "3. Delete" << endl;
     cout << "4. Dump table" << endl;
     cout << "5. Operator []" << endl;
-    cout << "6. Exit" << endl;
+    cout << "6. Read from file" << endl;
+    cout << "7. Write frequency table to file"  << endl;
+    cout << "8. Exit" << endl;
 
     cout << "Enter your choice: ";
 
@@ -58,9 +112,13 @@ int main()
 
     string key;
     int value = 0;
-
     int choice;
     bool go = true;
+    string fileName;
+    vector<string> myVec;
+    int counter;
+    ofstream out;
+    out.open("outfile.txt");
 
     while( go )
 
@@ -113,9 +171,28 @@ int main()
             cin >> key;
             cout << "Value at key is: " << table[key] << endl;
             break;
+
         case 6:
+
+            cout << "Enter a file name: ";
+            cin >> fileName;
+
+            myVec = readFile(fileName);
+
+            for (int i = 0; i < myVec.size(); i++)
+            {
+                table[(myVec.at(i))]++;
+                //std::cout << myVec.at(i);
+            }
+            break;
+
+        case 7:
+            table.displayFreq(out, myVec.size());
+            break;
+         case 8:
             go = false;
             break;
+
 
         default:
             cout << "\nEnter correct option\n";
@@ -124,3 +201,4 @@ int main()
 
     return 0;
 }
+

@@ -5,7 +5,7 @@
   Description: class HashTable represents an open addressing hash table
               (also known as closed_hashing) with linear probing
 */
-
+#include <vector>
 #ifndef HASHTABLE_H
 #define HASHTABLE_H
 
@@ -137,8 +137,9 @@ public:
     */
     //Display the table for debug and testing purposes
     void display(ostream& os);
+    void displayFreq(ostream& os, int numbWords);
 
-    
+    int getCounter();
     int& operator[] (string key);
 private:
     //data members
@@ -152,6 +153,7 @@ private:
     //number of items stored in the table
     int nItems; /**< number of items stored in the table */
 
+    int counter;
 
     //Each slot of the table stores a pointer to an Item =(key, value)
     Item** hTable; /**< table is an array of pointers to Items */
@@ -165,7 +167,6 @@ private:
     //Rehashing function
     // IMPLEMENT
     void reHash();
-
 
     //disable copy constructor
     HashTable(const HashTable &);
