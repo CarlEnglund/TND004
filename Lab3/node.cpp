@@ -31,8 +31,51 @@ Node::~Node()
 //Otherwise, return false --v already exists in the tree
 bool Node::insert(ELEMENT v)
 {
-    //ADD CODE
-    return false;
+    //does this have to be non-recursive?
+    //order from left... 1 2 3 4 5 6 ------> pays no regard to height
+    //insert in left subtree if less than root
+    if (v.first < value.first)
+    {
+        //might be children on the same level
+        if (l_thread) //if left thread is empty
+        {
+            //if left subtree is empty, point the left back to parent if understood correct from lab3_notes
+            Node* child = new Node(v, this, this->right);
+            child->l_thread = true; //both right and left thread of child are empty
+            child->r_thread = true; 
+            this->left = child;
+            this->l_thread = false; //not empty anymore
+            return true;
+        }
+        else //go left
+            return this->left->insert(v);
+    }
+
+
+    //insert in right subtree if larger than root
+    else if (v.first > value.first)
+    {
+        if (r_thread) //if right thread is empty
+        {
+            Node* child = new Node(v, this->left, this);
+            child->l_thread = true;
+            child-> r_thread = true;
+            this->right = child;
+            this->r_thread = false;
+            return true;
+        }
+        else // go right
+            return this->right->insert(v);
+
+    }
+
+    else // v.first == value.first
+    {
+        value.second++;
+        return false;
+
+    }
+    return true;
 }
 
 
