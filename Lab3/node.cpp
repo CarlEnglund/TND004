@@ -73,7 +73,6 @@ bool Node::insert(ELEMENT v)
     {
         value.second++;
         return false;
-
     }
     return true;
 }
@@ -116,6 +115,34 @@ void Node::removeMe(Node* parent, bool isRight)
 Node* Node::find(string key)
 {
     //ADD CODE
+    if (key < this->value.first)
+    {
+        if (l_thread) // empty!
+        {
+            return nullptr;
+        }
+
+        else
+        {
+           return this->left->find(key);
+        }
+    }
+    
+    else if (key > this->value.first)
+    {
+        if (r_thread) //empty!
+        {
+            return nullptr;
+        }
+        else
+        {
+            return this->right->find(key);
+        }
+    }
+    else //found!
+    {
+        return this;
+    }
     return nullptr;
 }
 

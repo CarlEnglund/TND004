@@ -33,7 +33,7 @@ ELEMENT& BiIterator::operator*() const
 ELEMENT* BiIterator::operator->() const
 {
     //ADD CODE
-    return nullptr;
+    return &current->value;
 }
 
 
@@ -41,7 +41,11 @@ ELEMENT* BiIterator::operator->() const
 bool BiIterator::operator==(const BiIterator &it) const
 {
     //ADD CODE
-    return false;
+  if (it.current == this->current)
+    return true;
+
+
+  return false;
 }
 
 

@@ -83,9 +83,16 @@ void BST_threaded::remove(string key)
 ELEMENT& BST_threaded::operator[](string key)
 {
     //ADD CODE
-    static ELEMENT e("", 0); //MUST remove this code
-
-    return e; //MUST remove this code
+    Node* node = root->left->find(key);
+    if (!node) // not found
+    {
+        pair <string, int> newElement;
+        newElement = std::make_pair(key, 0);
+        root->left->insert(newElement);
+        counter++;
+        return newElement;
+    }
+    return node->value; //found
 }
 
 
@@ -94,7 +101,18 @@ ELEMENT& BST_threaded::operator[](string key)
 //Otherwise, return this->end().
 BiIterator BST_threaded::find(string key) const
 {
-    //ADD CODE
+    if (!empty())
+    {
+        Node* node = root->left->find(key);
+
+        if (node) // if node not null (found)
+        {
+            return BiIterator(node);
+        }
+        else
+            return end();
+
+    }
     return end();
 }
 

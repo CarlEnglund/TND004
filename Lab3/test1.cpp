@@ -58,23 +58,23 @@ int main()
 //    /******************************************************
 //    *PHASE 2: operator[], find(), iterators               *
 //    *******************************************************/
-//    cout << "\n**TEST PHASE 2: operator[], find(), iterators"
-//         << endl << endl;
-//
-//    for(int i = 0; i < 6; i++)
-//    {
-//       cout << table[V[i]].first << " "
-//            << table[V[i]].second << endl;
-//    }
-//
-//    table["5"].second++;
-//    cout << endl << table["5"].first << " "
-//            << table["5"].second << endl;
-//
-//
-//   if (table.find("20") == table.end())
-//    cout << "20 is not in the tree" << endl;
-//
+    cout << "\n**TEST PHASE 2: operator[], find(), iterators"
+         << endl << endl;
+
+  for(int i = 0; i < 6; i++)
+    {
+       cout << table[V[i]].first << " "
+            << table[V[i]].second << endl;
+    }
+
+    table["5"].second++;
+    cout << endl << table["5"].first << " "
+            << table["5"].second << endl;
+
+
+   if (table.find("20") == table.end())
+        cout << "20 is not in the tree" << endl;
+
 //    //Insert (100,0) in the table
 //    cout << "(" << table["100"].first << ","
 //         << table["100"].second << ")" << " has been inserted in the table" << endl;
