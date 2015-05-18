@@ -25,23 +25,24 @@ BiIterator::BiIterator(Node *ptr)
 //Dereferencing operator
 ELEMENT& BiIterator::operator*() const
 {
-    //ADD CODE
+  //Return the value for the current node.
+  return this->current->value;
 }
 
 
 //Member access operator
 ELEMENT* BiIterator::operator->() const
 {
-    //ADD CODE
-    return &current->value;
+  ELEMENT* e = &this->current->value
+  return e;
 }
 
 
 //Equality comparison operator
 bool BiIterator::operator==(const BiIterator &it) const
 {
-    //ADD CODE
-  if (it.current == this->current)
+  
+  if (it.current->value == this->current->value)
     return true;
 
 
