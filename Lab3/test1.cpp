@@ -40,7 +40,7 @@ int main()
     *PHASE 1: insert()                                    *
     *         create the tree of slide 9, Fö 6            *
     *******************************************************/
-    cout << "\**TEST PHASE 1: insert"
+    cout << "**TEST PHASE 1: insert"
          << endl << endl;
 
     string V[] = {"6", "4", "5", "8", "7", "2"};
@@ -75,9 +75,9 @@ int main()
    if (table.find("20") == table.end())
         cout << "20 is not in the tree" << endl;
 
-//    //Insert (100,0) in the table
-//    cout << "(" << table["100"].first << ","
-//         << table["100"].second << ")" << " has been inserted in the table" << endl;
+   //Insert(100,0) in the table
+   cout << "(" << table["100"].first << ","
+        << table["100"].second << ")" << " has been inserted in the table" << endl;
 //
 //
 //   /******************************************************

@@ -150,9 +150,11 @@ Node* Node::find(string key)
 //Return a pointer to the node storing the smalest value
 //of the tree whose root is this node
 Node* Node::findMin()
-{
-    //ADD CODE
-    return nullptr;
+{ 
+   if(!l_thread)
+        return this->left->findMin();
+
+   return this;
 }
 
 
@@ -160,8 +162,10 @@ Node* Node::findMin()
 //of the tree whose root is this node
 Node* Node::findMax()
 {
-    //ADD CODE
-    return nullptr;
+    if(!r_thread)
+        return this->right->findMax();
+
+    return this;
 }
 
 
