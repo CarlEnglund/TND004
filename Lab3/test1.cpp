@@ -44,7 +44,7 @@ int main()
          << endl << endl;
 
     string V[] = {"6", "4", "5", "8", "7", "2"};
-//
+
     for(int i = 0; i < 6; i++)
     {
         ELEMENT e(V[i],0);
@@ -83,34 +83,34 @@ int main()
 //   /******************************************************
 //   *PHASE 3: iterators                                   *
 //   *******************************************************/
-//    cout << "\n**TEST PHASE 3: iterators up and down"
-//         << endl << endl;
-//
-//    cout << "\n\nTable sorted increasingly..."
-//         << endl << endl;
-//
-//    BiIterator it = table.begin();
-//
-//    cout << "  \tKEY" << "\tCOUNTER" << endl;
-//    cout << "==============================\n";
-//    for( ; it != table.end(); it++)
-//    {
-//         cout << setw(10) << it->first
-//              << setw(12) << it->second << endl;
-//    }
-//
-//    cout << "\n\nTable sorted decreasingly..." << endl << endl;
-//
-//    it = table.find("8");
-//
-//    cout << "  \tKEY" << "\tCOUNTER" << endl;
-//    cout << "==============================\n";
-//    for( ; it != table.end(); it--)
-//    {
-//         cout << setw(10) << it->first
-//              << setw(12) << it->second << endl;
-//    }
-//
+    cout << "\n**TEST PHASE 3: iterators up and down"
+         << endl << endl;
+
+    cout << "\n\nTable sorted increasingly..."
+         << endl << endl;
+
+    BiIterator it = table.begin();
+
+    cout << "  \tKEY" << "\tCOUNTER" << endl;
+    cout << "==============================\n";
+    for( ; it != table.end(); it++)
+    {
+         cout << setw(10) << it->first
+              << setw(12) << it->second << endl;
+    }
+
+    cout << "\n\nTable sorted decreasingly..." << endl << endl;
+/*
+    it = table.find("8");
+
+    cout << "  \tKEY" << "\tCOUNTER" << endl;
+    cout << "==============================\n";
+    for( ; it != table.end(); it--)
+    {
+         cout << setw(10) << it->first
+              << setw(12) << it->second << endl;
+    }
+//*
 //   /******************************************************
 //   *PHASE 4: remove                                      *
 //   *******************************************************/

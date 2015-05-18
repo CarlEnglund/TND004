@@ -56,14 +56,14 @@ bool BiIterator::operator!=(const BiIterator &it) const
 //Pre increment operator
 BiIterator& BiIterator::operator++()
 {
-  //See slide 11 och labnotes.
-  //Check if there is a right subtree.
-  if(this->current->r_thread)
-    this->current = this->current->right;
-
+  //See slide 11 in labnotes.
   //Otherwise find the minium value in the subtree.
+  if(!current->r_thread)
+    current = current->right->findMin();
+
+  //Check if there is a right subtree.
   else
-    this->current = this->current->right->findMin();
+    current = current->right;
 
   return *this;
 }
