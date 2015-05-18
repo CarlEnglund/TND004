@@ -33,7 +33,7 @@ ELEMENT& BiIterator::operator*() const
 //Member access operator
 ELEMENT* BiIterator::operator->() const
 {
-  ELEMENT* e = &this->current->value
+  ELEMENT* e = &this->current->value;
   return e;
 }
 
@@ -42,27 +42,30 @@ ELEMENT* BiIterator::operator->() const
 bool BiIterator::operator==(const BiIterator &it) const
 {
   
-  if (it.current->value == this->current->value)
-    return true;
-
-
-  return false;
+  return (it.current->value == this->current->value);
 }
 
 
 //Inequality comparison operator
 bool BiIterator::operator!=(const BiIterator &it) const
 {
-   //ADD CODE
-    return false;
+  return !(it.current->value == this->current->value);
 }
 
 
 //Pre increment operator
 BiIterator& BiIterator::operator++()
 {
-   //ADD CODE
-    return *this;
+  //See slide 11 och labnotes.
+  //Check if there is a right subtree.
+  if(this->current->r_thread)
+    this->current = this->current->right;
+
+  //Otherwise find the minium value in the subtree.
+  else
+    this->current = this->current->right->findMin();
+
+  return *this;
 }
 
 
@@ -70,22 +73,37 @@ BiIterator& BiIterator::operator++()
 //Pos increment operator: see page 277 and 278 of C++ direkt
 BiIterator BiIterator::operator++(int)
 {
-   //ADD CODE
-    return *this;
+  BiIterator tempIterator(*this);
+
+  ++(*this);
+
+  return tempIterator;
 }
 
 //Pre decrement operator
 BiIterator& BiIterator::operator--()
 {
-   //ADD CODE
-    return *this;
+  //Same as above
+  //Check if there is a left subtree.
+  if(this->current->r_thread)
+    this->current = this->current->left;
+
+  //Otherwise find the minium value in the subtree.
+  else
+    this->current = this->current->left->findMax();
+
+  return *this;
 }
 
 //Pos decrement operator
 BiIterator BiIterator::operator--(int)
 {
-   //ADD CODE
-    return *this;
+  //Same as above
+  BiIterator tempIterator(*this);
+
+  --(*this);
+
+  return tempIterator;
 }
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
