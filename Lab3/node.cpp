@@ -37,7 +37,12 @@ bool Node::insert(ELEMENT v)
    //does this have to be non-recursive?
     //order from left... 1 2 3 4 5 6 ------> pays no regard to height
     //insert in left subtree if less than root
-    if (v.first < value.first)
+    if (v.first == value.first) // v.first == value.first
+    {
+        value.second++;
+        return false;
+    }
+    else if (v.first < value.first)
     {
         //might be children on the same level
         if (l_thread) //if left thread is empty
@@ -70,12 +75,6 @@ bool Node::insert(ELEMENT v)
         else // go right
             return this->right->insert(v);
 
-    }
-
-    else // v.first == value.first
-    {
-        value.second++;
-        return false;
     }
     return true;
 }

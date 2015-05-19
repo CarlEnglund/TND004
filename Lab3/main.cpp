@@ -117,7 +117,7 @@ int main()
 
         table[s].second++;  //if s is not in the table then it is inserted
 
-        //count++;
+        count++;
     }
 
 
@@ -137,9 +137,28 @@ int main()
     *          and display table again                    *
     *******************************************************/
 
-   /* string wait;
-    getline(cin, wait);*/
+    string wait;
+    getline(cin, wait);
+    vector <string> removeVec;
+    BiIterator it = table.begin();
 
+    while (it != table.end())
+    {
+        //put all words we want to remove in vector
+        if (it->second == 1)
+        {
+            removeVec.push_back(it->first);
+        }
+        it++;
+    }
+
+    for (int i = 0; i < removeVec.size(); i++)
+    {
+        table.remove(removeVec.at(i));
+    }
+    //display again
+    cout << "Number of words in the file after removing: " << table.size() << endl;
+    displayTable(table);
     //ADD CODE
 
 
@@ -148,8 +167,33 @@ int main()
     * PHASE 4: request two words to the user w1 and w2         *
     *          then display all words in the interval [w1,w2]  *
     ************************************************************/
-
-    //ADD CODE
+    string w1, w2;
+    cout << "Enter words: ";
+    cin >> w1 >> w2;
+        cout << "Frequency table in [" << w1 << "," << w2 << "]" << endl;
+       cout << setw(17) << "KEY" << setw(10) << "COUNTER" << endl;
+    cout << "=========================================" << endl;
+    
+    //decreasing alphabetic order
+    BiIterator it2 = table.end();
+    bool test = false;
+    while (it2 != table.begin())
+    {
+        
+        if (it2->first == w2)
+        {
+            test = true;
+        }
+        if (test)
+        {
+            cout << setw(17) << right << it2->first << setw(17) << it2->second << endl;
+        }
+        if (it2->first == w1)
+        {
+            test = false;
+        }
+        it2--;
+    }
 
 
 

@@ -31,14 +31,14 @@ BST_threaded::BST_threaded()
 BST_threaded::~BST_threaded()
 {
   delete root;
-  //counter = 0; // perhaps?
+  counter = 0;
 }
 
 
 //Test if the tree is empty
 bool BST_threaded::empty() const
 {
-    //not sure if root->right is needed, cause real tree is stored as left child of dummy?
+   
     return counter == 0;
 }
 
@@ -92,9 +92,8 @@ ELEMENT& BST_threaded::operator[](string key)
     Node* node = root->left->find(key);
     if (!node) // not found
     {
-        root->left->insert(newElement);
-        counter++;
-        return newElement;
+        insert(newElement);
+        return root->left->find(key)->value;
     }
     else
         return node->value; //found
