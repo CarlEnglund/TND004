@@ -19,7 +19,59 @@
 
 using namespace std;
 
+/*void fixWords(string &s)
+{
+    string forbidden =".,!?:\"();";
+    string newWord = "";
+    bool test;
+    for (int i = 0; i < s.length(); i++)
+    {
+        test = false;
+        s[i] = tolower(s[i]);
+        for (int k = 0; k < forbidden.length(); k++)
+        {
+            if (s[i] == forbidden[k])
+            {
+                test = true;
+            }
+        }
+        if (!test) //if test is false, then assign char to the new word
+        {
+            newWord +=s[i];
+        }
+    }
+    s = newWord;
 
+}*/
+bool isNotAlnum (char ch)
+{
+    string forbidden =".,!?:\"();";
+    for (int i = 0; i < forbidden.size(); i++)
+    {
+        if (ch == forbidden[i])
+            return true;
+    }
+    return false;
+}
+
+void displayTable(MAP& table)
+{
+    //basically same as lab 2
+
+
+    cout << "Frequency table sorted alpabetically: " << endl << endl
+        << setw(17) << "KEY" << setw(10) << "COUNTER" << endl;
+    cout << "=========================================" << endl;
+
+    BiIterator it = table.begin();
+    while (it != table.end())
+    {
+        cout << setw(17) << right << it->first << setw(17) << it->second << endl;
+        it++;
+
+    }
+
+}
 
 /*******************************
 * 2. Main function             *
@@ -31,7 +83,8 @@ int main()
     MAP table;
 
     string name;
-
+    string s;
+    int count = 0;
     /******************************************************
     * PHASE 0: Load the words in the text file            *
     *          into a the table                           *
@@ -50,6 +103,7 @@ int main()
 
     cout << "Loading the words from " << name << " ...\n";
 
+    
     //Read words and load them in the table
     while (textFile >> s)
     {
@@ -63,7 +117,7 @@ int main()
 
         table[s].second++;  //if s is not in the table then it is inserted
 
-        count++;
+        //count++;
     }
 
 
@@ -75,15 +129,16 @@ int main()
     *******************************************************/
 
     //ADD CODE
-
-
+    cout << "Number of words in the file: " << count << endl;
+    cout << "Number of unique words: " << table.size() << endl;
+    displayTable(table);
     /******************************************************
     * PHASE 3: remove all words with counter 1            *
     *          and display table again                    *
     *******************************************************/
 
-    string wait;
-    getline(cin, wait);
+   /* string wait;
+    getline(cin, wait);*/
 
     //ADD CODE
 
