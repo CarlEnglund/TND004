@@ -22,7 +22,10 @@ Node::Node(ELEMENT v, Node *l, Node *r)
 //recursively deletes the nodes in the left_subtree and right-subtree
 Node::~Node()
 {
-    //ADD CODE
+    if (!l_thread)
+        delete left;
+    if (!r_thread)
+        delete right;
 }
 
 
@@ -31,50 +34,50 @@ Node::~Node()
 //Otherwise, return false --v already exists in the tree
 bool Node::insert(ELEMENT v)
 {
-    //does this have to be non-recursive?
-    //order from left... 1 2 3 4 5 6 ------> pays no regard to height
-    //insert in left subtree if less than root
-    if (v.first < value.first)
-    {
-        //might be children on the same level
-        if (l_thread) //if left thread is empty
-        {
-            //if left subtree is empty, point the left back to parent if understood correct from lab3_notes
-            Node* child = new Node(v, this, this->right);
-            child->l_thread = true; //both right and left thread of child are empty
-            child->r_thread = true; 
-            this->left = child;
-            this->l_thread = false; //not empty anymore
-            return true;
+    // Value bigger then value of node, check in the right subtree
+    if(v.first > value.first){
+        
+        // If no more nodes in right thread, insert
+        if(r_thread){
+            
+            Node* newChild = new Node(v, this, this->right);
+            this->right = newChild;
+            this->r_thread = false;
+            newChild->r_thread = newChild->l_thread = true;
+            
         }
-        else //go left
+        
+        // Keep going right
+        else
+            return this->right->insert(v);
+    }
+    
+    // Value smaller then value of node, check in the left subtree
+    else if (v < value){
+        
+        // If no more nodes to the left, insert
+        if(l_thread){
+            
+            Node* newChild = new Node(v, this->left, this);
+            this->left = newChild;
+            this->l_thread = false;
+            newChild->r_thread = newChild->l_thread = true;
+            
+        }
+        
+        // Keep going left
+        else
             return this->left->insert(v);
     }
-
-
-    //insert in right subtree if larger than root
-    else if (v.first > value.first)
-    {
-        if (r_thread) //if right thread is empty
-        {
-            Node* child = new Node(v, this->left, this);
-            child->l_thread = true;
-            child-> r_thread = true;
-            this->right = child;
-            this->r_thread = false;
-            return true;
-        }
-        else // go right
-            return this->right->insert(v);
-
-    }
-
-    else // v.first == value.first
-    {
+    
+    // Same value, updating..
+    else {
         value.second++;
         return false;
     }
+    
     return true;
+
 }
 
 
@@ -86,8 +89,35 @@ bool Node::insert(ELEMENT v)
 //isRight==true: this node is right child of parent
 bool Node::remove(string key, Node* parent, bool isRight)
 {
-    //ADD CODE
-    return false;
+    //Look for value if not correct, call yourself and keep searching.
+    if(key < value.first)
+    {
+        
+        if(!l_thread)
+        {
+            left->remove(key, this, false);
+        }
+    }
+    
+    //Look for value if not correct, call yourself and keep searching.
+    else if(key > value.first)
+    {
+        if(!r_thread)
+        {
+            right->remove(key, this, false);
+        }
+    }
+    
+    //Correct value
+    else if(key == value.first)
+    {
+        if(!r_thread && !l_thread)
+        {
+            value = right->findMin()->value;
+            return right->remove(key, this, true);
+        }
+    }
+    
 }
 
 
@@ -139,7 +169,7 @@ Node* Node::find(string key)
             return this->right->find(key);
         }
     }
-    else //found!
+    else if(key == this->value.first)//found!
     {
         return this;
     }

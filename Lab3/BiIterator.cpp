@@ -56,9 +56,7 @@ bool BiIterator::operator!=(const BiIterator &it) const
 //Pre increment operator
 BiIterator& BiIterator::operator++()
 {
-  //See slide 11 in labnotes.
-  //Otherwise find the minium value in the subtree.
-  if(!current->r_thread)
+  if(!(current->r_thread))
     current = current->right->findMin();
 
   //Check if there is a right subtree.
@@ -73,19 +71,20 @@ BiIterator& BiIterator::operator++()
 //Pos increment operator: see page 277 and 278 of C++ direkt
 BiIterator BiIterator::operator++(int)
 {
-  BiIterator tempIterator(*this);
-
-  ++(*this);
-
-  return tempIterator;
+    BiIterator *it = this;
+    
+    if (!current->r_thread)
+        current = current->right->findMin();
+    else
+        current = current->right;
+    
+    return *it;
 }
 
 //Pre decrement operator
 BiIterator& BiIterator::operator--()
 {
-  //Same as above
-  //Check if there is a left subtree.
-  if(this->current->r_thread)
+  if(!(this->current->l_thread))
     this->current = this->current->left;
 
   //Otherwise find the minium value in the subtree.
@@ -98,12 +97,13 @@ BiIterator& BiIterator::operator--()
 //Pos decrement operator
 BiIterator BiIterator::operator--(int)
 {
-  //Same as above
-  BiIterator tempIterator(*this);
+    BiIterator *it = this;
 
-  --(*this);
-
-  return tempIterator;
+    if (!current->l_thread)
+        current = current->left->findMax();
+    else
+        current = current->left;
+    return *it;
 }
 
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */

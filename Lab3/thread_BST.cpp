@@ -31,7 +31,7 @@ BST_threaded::BST_threaded()
 BST_threaded::~BST_threaded()
 {
   delete root;
-  counter = 0; // perhaps?
+  //counter = 0; // perhaps?
 }
 
 
@@ -39,10 +39,7 @@ BST_threaded::~BST_threaded()
 bool BST_threaded::empty() const
 {
     //not sure if root->right is needed, cause real tree is stored as left child of dummy?
-    if (root->left == nullptr && root->right == nullptr)
-        return true;
-
-    return false;
+    return counter == 0;
 }
 
 //Return mumber of keys (elements) stored in the tree
@@ -71,7 +68,9 @@ void BST_threaded::insert(ELEMENT v)
 //Remove node with key from the tree
 void BST_threaded::remove(string key)
 {
-   //ADD CODE
+    if(root->left->remove(key, root, false))
+        counter--;
+
 }
 
 
@@ -120,10 +119,7 @@ BiIterator BST_threaded::find(string key) const
 //Return an iterator referring to the first node in the inorder traversal of the BST
 BiIterator BST_threaded::begin() const
 {
-    if(empty()) 
-        return end();
-    Node* firstNode = root->left->findMin();
-    BiIterator it(firstNode);
+    BiIterator it(root->left->findMin());
     return it;
 }
 
