@@ -122,6 +122,7 @@ BiIterator BST_threaded::begin() const
 {
     if(empty()) 
         return end();
+    
     Node* firstNode = root->left->findMin();
     BiIterator it(firstNode);
     return it;

@@ -18,7 +18,7 @@
 BiIterator::BiIterator(Node *ptr)
  : current(ptr)
  {
-
+    
  }
 
 
@@ -26,7 +26,7 @@ BiIterator::BiIterator(Node *ptr)
 ELEMENT& BiIterator::operator*() const
 {
   //Return the value for the current node.
-  return this->current->value;
+  return current->value;
 }
 
 
@@ -49,7 +49,7 @@ bool BiIterator::operator==(const BiIterator &it) const
 //Inequality comparison operator
 bool BiIterator::operator!=(const BiIterator &it) const
 {
-  return !(it.current->value == this->current->value);
+  return it.current->value != this->current->value;
 }
 
 

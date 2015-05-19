@@ -100,7 +100,7 @@ int main()
     }
 
     cout << "\n\nTable sorted decreasingly..." << endl << endl;
-/*
+
     it = table.find("8");
 
     cout << "  \tKEY" << "\tCOUNTER" << endl;

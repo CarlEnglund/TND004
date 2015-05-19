@@ -39,8 +39,8 @@ bool Node::insert(ELEMENT v)
         //might be children on the same level
         if (l_thread) //if left thread is empty
         {
-            //if left subtree is empty, point the left back to parent if understood correct from lab3_notes
-            Node* child = new Node(v, this, this->right);
+            //if left subtree is empty, point the left to itself(?) and right to parent
+            Node* child = new Node(v, this->left, this);
             child->l_thread = true; //both right and left thread of child are empty
             child->r_thread = true; 
             this->left = child;
@@ -57,7 +57,7 @@ bool Node::insert(ELEMENT v)
     {
         if (r_thread) //if right thread is empty
         {
-            Node* child = new Node(v, this->left, this);
+            Node* child = new Node(v, this, this->right);
             child->l_thread = true;
             child-> r_thread = true;
             this->right = child;
