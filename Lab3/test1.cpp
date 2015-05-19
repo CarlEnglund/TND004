@@ -99,7 +99,7 @@ int main()
               << setw(12) << it->second << endl;
     }
 
-   cout << "\n\nTable sorted decreasingly..." << endl << endl;
+    cout << "\n\nTable sorted decreasingly..." << endl << endl;
 
     it = table.find("8");
 

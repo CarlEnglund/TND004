@@ -34,52 +34,51 @@ Node::~Node()
 //Otherwise, return false --v already exists in the tree
 bool Node::insert(ELEMENT v)
 {
-    // Value bigger then value of node, check in the right subtree
-    if(v.first > value.first){
-        
-        // If no more nodes in right thread, insert
-        if(r_thread){
-            
-            Node* newChild = new Node(v, this, this->right);
-            this->right = newChild;
-            this->r_thread = false;
-            newChild->r_thread = newChild->l_thread = true;
-            
+   //does this have to be non-recursive?
+    //order from left... 1 2 3 4 5 6 ------> pays no regard to height
+    //insert in left subtree if less than root
+    if (v.first < value.first)
+    {
+        //might be children on the same level
+        if (l_thread) //if left thread is empty
+        {
+            //if left subtree is empty, point the left to itself(?) and right to parent
+            Node* child = new Node(v, this->left, this);
+            child->l_thread = true; //both right and left thread of child are empty
+            child->r_thread = true; 
+            this->left = child;
+            this->l_thread = false; //not empty anymore
+            return true;
         }
-        
-        // Keep going right
-        else
-            return this->right->insert(v);
-    }
-    
-    // Value smaller then value of node, check in the left subtree
-    else if (v < value){
-        
-        // If no more nodes to the left, insert
-        if(l_thread){
-            
-            Node* newChild = new Node(v, this->left, this);
-            this->left = newChild;
-            this->l_thread = false;
-            newChild->r_thread = newChild->l_thread = true;
-            
-        }
-        
-        // Keep going left
-        else
+        else //go left
             return this->left->insert(v);
     }
-    
-    // Same value, updating..
-    else {
+
+
+    //insert in right subtree if larger than root
+    else if (v.first > value.first)
+    {
+        if (r_thread) //if right thread is empty
+        {
+            Node* child = new Node(v, this, this->right);
+            child->l_thread = true;
+            child-> r_thread = true;
+            this->right = child;
+            this->r_thread = false;
+            return true;
+        }
+        else // go right
+            return this->right->insert(v);
+
+    }
+
+    else // v.first == value.first
+    {
         value.second++;
         return false;
     }
-    
     return true;
-
 }
-
 
 
 //Remove the key from the tree having as root this node
