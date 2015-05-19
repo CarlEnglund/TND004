@@ -122,10 +122,9 @@ bool Node::remove(string key, Node* parent, bool isRight)
     else if(key == value.first)
     {
         //both right thread and left thread have nodes --> node has more than one child,
+        // if true use largest value of left subtree to replace root, then remove leaf
         if(!r_thread && !l_thread)
         {
-            //find second largest node, which will be in the right tree ofc
-            //then update value and remove the second largest node
             value = left->findMax()->value;
             return left->remove(value.first, this, false);
         }
