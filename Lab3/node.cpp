@@ -89,33 +89,54 @@ bool Node::insert(ELEMENT v)
 bool Node::remove(string key, Node* parent, bool isRight)
 {
     //Look for value if not correct, call yourself and keep searching.
+    //if key smaller than value, check left
     if(key < value.first)
     {
         
         if(!l_thread)
         {
-            left->remove(key, this, false);
+            return left->remove(key, this, false);
         }
+        else
+        {
+            return false;
+        }
+
     }
     
     //Look for value if not correct, call yourself and keep searching.
+    //if key larger than value, check right
     else if(key > value.first)
     {
         if(!r_thread)
         {
-            right->remove(key, this, false);
+            return right->remove(key, this, true);
+        }
+        else
+        {
+            return false;
         }
     }
     
     //Correct value
     else if(key == value.first)
     {
+        //both right thread and left thread have nodes --> node has more than one child,
         if(!r_thread && !l_thread)
         {
-            value = right->findMin()->value;
-            return right->remove(key, this, true);
+            //find second largest node, which will be in the right tree ofc
+            //then update value and remove the second largest node
+            value = left->findMax()->value;
+            return left->remove(value.first, this, false);
+        }
+        else // one or no child
+        {
+            removeMe(parent, isRight);
+            return true;
         }
     }
+
+    return false;
     
 }
 
@@ -133,7 +154,61 @@ bool Node::remove(string key, Node* parent, bool isRight)
 //2c: a right child with no children
 void Node::removeMe(Node* parent, bool isRight)
 {
-   //ADD CODE
+
+    //1
+    if (!isRight)
+    {
+        //1a: a left child with only a right child
+        // is not right child, has no left thread
+        if (l_thread && !r_thread)
+        {
+            //remove
+            parent->left = this->right;
+            Node *temp = parent->left->findMin();
+            temp->left = this->left;
+        }
+        //1b: a left child with only a left child
+        else if (r_thread && !l_thread)
+        {
+            parent->left = this->left;
+            Node *temp = parent->left->findMax();
+            temp->right = this->right;
+        }
+        //1c: a left child with no children
+        else if (r_thread && l_thread)
+        {
+            parent->l_thread = true;
+            parent->left = this->left;
+        }
+    }
+    //2
+    else if (isRight)
+    {
+        //2a: a right child with only a right child
+        if (l_thread && !r_thread)
+        {
+            parent->right = this->right;
+            Node *temp = parent->right->findMin();
+            temp->left = this->left;
+        }
+        //2b: a right child with only a left child
+        else if (r_thread && !l_thread)
+        {
+            parent->right = this->left;
+            Node *temp = parent->right->findMax();
+            temp->right = this->right;
+        }
+        //2c: a right child with no children
+        else if (r_thread && l_thread)
+        {
+            parent->r_thread = true;
+            parent->right = this->right;
+        }
+    }
+
+    l_thread = true;
+    r_thread = true;
+    delete this;
 }
 
 
