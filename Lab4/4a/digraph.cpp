@@ -17,7 +17,7 @@ using namespace std;
 const int INFINITY = 9999;
 
 // -- CONSTRUCTORS
-
+//digraph = directed graph
 Digraph::Digraph(int n)
 {
     assert(n >= 1);
@@ -60,6 +60,10 @@ void Digraph::removeEdge(int u, int v)
 // unweighted single source shortest paths
 void Digraph::uwsssp(int s)
 {
+    // s = start vertex
+    //queue: first in, first out. jämför med stack: last in, first out.
+    //enqueue: insertion/push, dequeue: deletion/pop
+    //dvs: insertion i slutet, removal i början.
     if (s < 1 || s > size)
     {
          cout << "\nERROR: expected source s in range 1.." << size << " !" << endl;
@@ -67,6 +71,42 @@ void Digraph::uwsssp(int s)
     }
 
     // *** TODO ***
+
+    //create a queue
+    Queue<int> Q;
+    //no nodes yet visited, see fö.13
+    for(int i=1; i<size+1; i++)
+    {
+        done[i] = false;
+        dist[i] = INFINITY;
+        path[i] = 0;
+    }
+
+    dist[s]=0;
+
+    Q.enqueue(s); // put start in queue
+    while(!Q.isEmpty())
+    {
+        int v = Q.getFront(); //get first vertex in queue
+        //pop the front element
+        Q.dequeue();
+        //get first node in list
+        Node *temp = array[v].getFirst();
+        //while queued node has next
+        while (temp != nullptr)
+        {
+            if (dist[temp->vertex] == INFINITY)
+            {
+                dist[temp->vertex] = dist[temp->vertex]+1;
+                path[temp->vertex] = v;
+                Q.enqueue(temp->vertex);
+            }
+            temp = temp->next;
+        }
+    }
+
+
+
 }
 
 // positive weighted single source shortest pats
