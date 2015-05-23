@@ -71,10 +71,11 @@ void Digraph::uwsssp(int s)
     }
 
     // *** TODO ***
-
+    //s.410 i boken eller föreläsning
     //create a queue
     Queue<int> Q;
-    //no nodes yet visited, see fö.13
+    //no nodes yet visited
+
     for(int i=1; i<size+1; i++)
     {
         done[i] = false;
