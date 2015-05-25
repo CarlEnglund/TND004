@@ -79,7 +79,6 @@ void Digraph::uwsssp(int s)
     {
         dist[i] = INFINITY;
         path[i] = 0;
-        done[i] = false;
     }
     // first node -> distance to itself is of course 0
     dist[s]=0;
@@ -97,12 +96,10 @@ void Digraph::uwsssp(int s)
         //while node has next
         while (temp != nullptr)
         {
-            //if (!done[temp->vertex]) // varför funkar ej denna? fan e done bra för annars? 
             if (dist[temp->vertex] == INFINITY)
             {
                 dist[temp->vertex] = dist[v]+1; // + 1 distance from start
                 path[temp->vertex] = v;
-                done[temp->vertex] = true;
                 Q.enqueue(temp->vertex);
             }
             temp = temp->next;
@@ -114,6 +111,7 @@ void Digraph::uwsssp(int s)
 }
 
 // positive weighted single source shortest pats
+// dijktras algorithm
 void Digraph::pwsssp(int s)
 {
     if (s < 1 || s > size)
