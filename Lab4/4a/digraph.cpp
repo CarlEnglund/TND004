@@ -131,17 +131,20 @@ void Digraph::pwsssp(int s)
 
     ; // smallest unknown distance vertex
 
+    int v = s;
+    done[v] = true;
 
-    while (true)
+    int d;
+    do
     {
-        int v = s;
-        done[v] = true;
         Node* temp = array[v].getFirst(); //adjacent vertex
 
         while (temp != nullptr)
         {
-            //p.417 in book
-            //shortest path is not known (!done), 
+            //p.417 in book.
+            //at each stage, select a vertex which has smallest dist from start among ALL unknown vertices.
+            //declare shortest path from s to v as known.
+
             if (!done[temp->vertex])
             {
                 int cost = temp-> weight; //cost of edge from v to temp->vertex
@@ -155,14 +158,18 @@ void Digraph::pwsssp(int s)
         }
         done[v] =  true;
 
+        d = INFINITY;
+        //find smallest undone distance vertex
         for (int i = 1; i < size + 1; i++)
         {
-            
+            if (!done[i] && dist[i] < d)
+            {
+                d = dist[i];
+                v = i;
+            }
         }
 
-
-        //break;
-    }
+    }while(d != INFINITY);
 
     // *** TODO ***
 }
