@@ -82,7 +82,6 @@ void Digraph::uwsssp(int s)
     }
     // first node -> distance to itself is of course 0
     dist[s]=0;
-    //mark s as visited
     Q.enqueue(s); // put start in queue
     while(!Q.isEmpty())
     {
@@ -118,6 +117,51 @@ void Digraph::pwsssp(int s)
     {
          cout << "\nERROR: expected source s in range 1.." << size << " !" << endl;
          return;
+    }
+
+    for (int i = 1; i < size + 1; i++)
+    {
+        dist[i] = INFINITY;
+        path[i] = 0;
+        done[i] = false;
+    }
+
+    dist[s] = 0;
+    
+
+    ; // smallest unknown distance vertex
+
+
+    while (true)
+    {
+        int v = s;
+        done[v] = true;
+        Node* temp = array[v].getFirst(); //adjacent vertex
+
+        while (temp != nullptr)
+        {
+            //p.417 in book
+            //shortest path is not known (!done), 
+            if (!done[temp->vertex])
+            {
+                int cost = temp-> weight; //cost of edge from v to temp->vertex
+                if (dist[v] + cost < dist[temp->vertex])
+                {
+                    dist[temp->vertex] = dist[v] +  cost;
+                    path[temp->vertex] = v;
+                }
+            }
+            temp = array[v].getNext();
+        }
+        done[v] =  true;
+
+        for (int i = 1; i < size + 1; i++)
+        {
+            
+        }
+
+
+        //break;
     }
 
     // *** TODO ***
