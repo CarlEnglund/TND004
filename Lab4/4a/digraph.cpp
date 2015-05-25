@@ -214,5 +214,12 @@ void Digraph::printPath(int t) const
          return;
     }
 
-    // *** TODO ***
+    if (path[t] == 0)
+        cout << " " << t;
+
+    // RECURSION <3
+    printPath(path[t]);
+    std::cout << " " << t << " ";
+
 }
+
