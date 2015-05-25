@@ -69,37 +69,40 @@ void Digraph::uwsssp(int s)
          cout << "\nERROR: expected source s in range 1.." << size << " !" << endl;
          return;
     }
-
-    // *** TODO ***
-    //s.410 i boken eller föreläsning
-    //create a queue
+    // s.410 i boken eller föreläsning
+    // http://www.geeksforgeeks.org/breadth-first-traversal-for-a-graph/
+    // http://www.programming-techniques.com/2012/07/breadth-first-search-in-c-algorithm-and.html
     Queue<int> Q;
-    //no nodes yet visited
 
+    //no nodes yet visited
     for(int i=1; i<size+1; i++)
     {
-        done[i] = false;
         dist[i] = INFINITY;
         path[i] = 0;
+        done[i] = false;
     }
-
+    // first node -> distance to itself is of course 0
     dist[s]=0;
-
+    //mark s as visited
     Q.enqueue(s); // put start in queue
     while(!Q.isEmpty())
     {
         int v = Q.getFront(); //get first vertex in queue
+
+       // cout << v << " ";
         //pop the front element
         Q.dequeue();
-        //get first node in list
+        //get first adjacent node
         Node *temp = array[v].getFirst();
-        //while queued node has next
+        //while node has next
         while (temp != nullptr)
         {
+            //if (!done[temp->vertex]) // varför funkar ej denna? fan e done bra för annars? 
             if (dist[temp->vertex] == INFINITY)
             {
-                dist[temp->vertex] = dist[temp->vertex]+1;
+                dist[temp->vertex] = dist[v]+1; // + 1 distance from start
                 path[temp->vertex] = v;
+                done[temp->vertex] = true;
                 Q.enqueue(temp->vertex);
             }
             temp = temp->next;
