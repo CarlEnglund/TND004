@@ -90,17 +90,17 @@ void Digraph::uwsssp(int s)
         //pop the front element
         Q.dequeue();
         //get first adjacent node
-        Node *temp = array[v].getFirst();
+        Node *adjNode = array[v].getFirst();
         //while node has next
-        while (temp != nullptr)
+        while (adjNode != nullptr)
         {
-            if (dist[temp->vertex] == INFINITY)
+            if (dist[adjNode->vertex] == INFINITY)
             {
-                dist[temp->vertex] = dist[v]+1; // + 1 distance from start if infinity
-                path[temp->vertex] = v;
-                Q.enqueue(temp->vertex);
+                dist[adjNode->vertex] = dist[v]+1; // + 1 distance from start if infinity
+                path[adjNode->vertex] = v;
+                Q.enqueue(adjNode->vertex);
             }
-            temp = temp->next;
+            adjNode = adjNode->next;
         }
     }
 
@@ -134,12 +134,13 @@ void Digraph::pwsssp(int s)
     while (true) // while d != INFINITY (while there is an unknown distance vertex)
     {
         Node* adjNode = array[currVer].getFirst(); //adjacent
-
+        //at each stage, select a vertex which has smallest dist from start among all unknown vertices.
+        //update the dist of each vertex v adjacent vertex w , if better path through v.
+        //p.417 in book.
         while (adjNode != nullptr)
         {
-            //p.417 in book.
-            //at each stage, select a vertex which has smallest dist from start among all unknown vertices.
-            //update the dist of each vertex v adjacent vertex w , if better path through v.
+            
+
           //  cout << "Vertex number: " << currVer << " Adjacent vertex: " << adjNode->vertex << endl;
             if (!done[adjNode->vertex])
             {
@@ -168,8 +169,6 @@ void Digraph::pwsssp(int s)
             break;
 
     }
-
-    // *** TODO ***
 }
 
 // print graph
