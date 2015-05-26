@@ -143,13 +143,13 @@ void Graph::mstKruskal() const
       {
         D.join(D.find(b.head), D.find(b.tail));
         edgesAccepted++;
-
         cout << b << endl;
       } 
 
 
     }
 
+    
   
 }
 
