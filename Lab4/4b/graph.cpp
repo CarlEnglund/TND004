@@ -58,15 +58,17 @@ void Graph::removeEdge(int u, int v)
 // Prim's minimum spanning tree algorithm
 void Graph::mstPrim() const
 {
+    //Declare edges and bool array for what we have visited
     vector<Edge> edges;
     bool done[size+1];
 
+    //Init all to false
     for(int i = 0; i <= size; i++)
     {
       done[i] = false;
     }
 
-    //Starting vertex
+    //Starting vertex, set it to true. Get the first edge
     int s = 1;
     done[s] = true; 
     Node *edgeNodes = array[s].getFirst();
@@ -100,23 +102,55 @@ void Graph::mstPrim() const
       if(!res)
         break;
 
-      edges.push_back(smallest);
-      cout << " " << s;
+      cout << smallest<< endl;
       done[s] = true;
     }
 
-    for(Edge e : edges)
-    {
-      if(e.head > 0)
-        cout << e << endl;
-    }
+    
 
 }
 
 // Kruskal's minimum spanning tree algorithm
 void Graph::mstKruskal() const
 {
-    // *** TODO ***
+    //Init heap and Dsets
+    Heap <Edge>H;
+    DSets D(size);
+
+
+    //Occupy the heap.
+    for (int i = 0; i < size; i++)
+    {
+     Node *n = array[i].getFirst();
+     while(n)
+     {
+      if(i < n->vertex)
+      {
+        Edge e(i, n->vertex, n->weight);
+        H.insert(e);
+      }
+      n = n->next;
+     } 
+     
+    }
+
+    int edgesAccepted = 0;
+
+    while(edgesAccepted < size-1)
+    {
+       Edge b = H.deleteMin();
+      if(D.find(b.head) != D.find(b.tail))
+      {
+        D.join(D.find(b.head), D.find(b.tail));
+        edgesAccepted++;
+
+        cout << b << endl;
+      } 
+
+
+    }
+
+  
 }
 
 // print graph
