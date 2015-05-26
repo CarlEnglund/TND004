@@ -70,9 +70,6 @@ void Graph::mstPrim() const
       path[i] = 0;
     }
 
-    //Starting vertex, set it to true. Get the first edge
-
-
     int s = 1;
     dist[s] = 0;
     done[s] = true; 
@@ -115,7 +112,7 @@ void Graph::mstPrim() const
 
         Edge myEdge(path[currVer],currVer, dist[currVer]);
         cout << myEdge << endl;
-        
+
         totWeight += dist[currVer];
     }
 
