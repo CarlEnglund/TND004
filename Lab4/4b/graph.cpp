@@ -128,6 +128,7 @@ void Graph::mstKruskal() const
     //Init heap and Dsets
     Heap <Edge>H;
     DSets D(size);
+    int totWeight = 0;
 
 
     //Occupy the heap.
@@ -146,20 +147,26 @@ void Graph::mstKruskal() const
      
     }
 
+    //Counter for the edges we want to add.
     int edgesAccepted = 0;
 
     while(edgesAccepted < size-1)
     {
-       Edge b = H.deleteMin();
+      //Finds edge with lowest cost, see slides on lecture 14
+      Edge b = H.deleteMin();
+      //Does head and tail belong to the same tree?
       if(D.find(b.head) != D.find(b.tail))
       {
+        //Merge two different trees
         D.join(D.find(b.head), D.find(b.tail));
         edgesAccepted++;
+        totWeight += b.weight;
+
         cout << b << endl;
       } 
-
-
     }
+
+    cout << endl << "Total weight = " << totWeight << endl;
 
     
   
