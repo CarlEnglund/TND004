@@ -1,4 +1,4 @@
-== Menu =======
+ == Menu =======
 1. readGraph
 2. mstPrim
 3. mstKruskal

@@ -139,18 +139,14 @@ void Digraph::pwsssp(int s)
         //p.417 in book.
         while (adjNode != nullptr)
         {
-            
-
           //  cout << "Vertex number: " << currVer << " Adjacent vertex: " << adjNode->vertex << endl;
-            if (!done[adjNode->vertex])
+            //if !done and shorter path
+            if (!done[adjNode->vertex] && dist[currVer] + adjNode->weight < dist[adjNode->vertex])
             {
-                //if shorter path
-                if (dist[currVer] + adjNode->weight < dist[adjNode->vertex])
-                {
-                    dist[adjNode->vertex] = dist[currVer] +  adjNode->weight;
-                    path[adjNode->vertex] = currVer;
-                }
+                dist[adjNode->vertex] = dist[currVer] +  adjNode->weight;
+                path[adjNode->vertex] = currVer;
             }
+
             adjNode = array[currVer].getNext();
         }
         done[currVer] =  true; // all neighbours have been checked

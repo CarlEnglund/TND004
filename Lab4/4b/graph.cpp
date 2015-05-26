@@ -55,60 +55,75 @@ void Graph::removeEdge(int u, int v)
     array[v].remove(u);
 }
 
-// Prim's minimum spanning tree algorithm
+
 void Graph::mstPrim() const
 {
-    //Declare edges and bool array for what we have visited
-    vector<Edge> edges;
-    bool done[size+1];
+    bool done[size + 1];
+    int dist[size + 1];
+    int path[size + 1];
 
     //Init all to false
     for(int i = 0; i <= size; i++)
     {
       done[i] = false;
+      dist[i] = INFINITY;
+      path[i] = 0;
     }
 
     //Starting vertex, set it to true. Get the first edge
+
+
     int s = 1;
+    dist[s] = 0;
     done[s] = true; 
-    Node *edgeNodes = array[s].getFirst();
-    while(true)
+
+    int totWeight = 0;
+    
+    int currVer = s;
+    done[currVer] = true;
+    int d;
+    while(true) // while d != INFINITY (while there is an unknown distance vertex)
     {
-      Edge smallest = Edge(0, 0, INFINITY);
-      Node *res = nullptr;
-      for (int j = 0; j <= size; j++)
-      {
-        if(!done[j])
-          continue;
 
-        edgeNodes = array[j].getFirst();
-
-        while(edgeNodes)
+        Node *adjNode = array[currVer].getFirst();
+        while(adjNode)
         {
-          Edge w = Edge(j, edgeNodes->vertex, edgeNodes->weight);
+            if (!done[adjNode->vertex] && dist[adjNode->vertex] > adjNode->weight)
+            {
+                dist[adjNode->vertex] = adjNode->weight;
+                path[adjNode->vertex] = currVer;
 
-          if(!done[edgeNodes->vertex] && w < smallest)
-          {
-            smallest = w;
-            s = w.tail;
-            res = edgeNodes;
-          }
-          edgeNodes = edgeNodes->next;
+            }            
+            adjNode = array[currVer].getNext();
         }
+        done[currVer] = true; //all neighbours have been checked
+        
 
-      }
 
-      //Exit if we found next vertex?
-      if(!res)
-        break;
+        d = INFINITY;
+        //find smallest undone distance vertex
+        for (int i = 1; i < size + 1; i++)
+        {
+            if (!done[i] && dist[i] < d)
+            {
+                d = dist[i]; // will become smallest possible
+                currVer = i;
+            }
+        }
+        if (d == INFINITY)
+            break;
 
-      cout << smallest<< endl;
-      done[s] = true;
+        Edge myEdge(path[currVer],currVer, dist[currVer]);
+        cout << myEdge << endl;
+        
+        totWeight += dist[currVer];
     }
 
-    
+    cout << "Total weight is: " << totWeight << endl;
+
 
 }
+
 
 // Kruskal's minimum spanning tree algorithm
 void Graph::mstKruskal() const
