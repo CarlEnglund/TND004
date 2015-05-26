@@ -70,8 +70,7 @@ void Digraph::uwsssp(int s)
          return;
     }
     // s.410 i boken eller föreläsning
-    // http://www.geeksforgeeks.org/breadth-first-traversal-for-a-graph/
-    // http://www.programming-techniques.com/2012/07/breadth-first-search-in-c-algorithm-and.html
+
     Queue<int> Q;
 
     //no nodes yet visited
@@ -80,7 +79,7 @@ void Digraph::uwsssp(int s)
         dist[i] = INFINITY;
         path[i] = 0;
     }
-    // first node -> distance to itself is of course 0
+    // first node -> set dist to 0
     dist[s]=0;
     Q.enqueue(s); // put start in queue
     while(!Q.isEmpty())
@@ -97,7 +96,7 @@ void Digraph::uwsssp(int s)
         {
             if (dist[temp->vertex] == INFINITY)
             {
-                dist[temp->vertex] = dist[v]+1; // + 1 distance from start
+                dist[temp->vertex] = dist[v]+1; // + 1 distance from start if infinity
                 path[temp->vertex] = v;
                 Q.enqueue(temp->vertex);
             }
@@ -128,35 +127,32 @@ void Digraph::pwsssp(int s)
 
     dist[s] = 0;
     
-
-    ; // smallest unknown distance vertex
-
-    int v = s;
-    done[v] = true;
+    int currVer = s;
+    done[currVer] = true;
 
     int d;
-    do
+    while (true) // while d != INFINITY (while there is an unknown distance vertex)
     {
-        Node* temp = array[v].getFirst(); //adjacent vertex
+        Node* adjNode = array[currVer].getFirst(); //adjacent
 
-        while (temp != nullptr)
+        while (adjNode != nullptr)
         {
             //p.417 in book.
-            //at each stage, select a vertex which has smallest dist from start among ALL unknown vertices.
-            //declare shortest path from s to v as known.
-
-            if (!done[temp->vertex])
+            //at each stage, select a vertex which has smallest dist from start among all unknown vertices.
+            //update the dist of each vertex v adjacent vertex w , if better path through v.
+          //  cout << "Vertex number: " << currVer << " Adjacent vertex: " << adjNode->vertex << endl;
+            if (!done[adjNode->vertex])
             {
-                int cost = temp-> weight; //cost of edge from v to temp->vertex
-                if (dist[v] + cost < dist[temp->vertex])
+                //if shorter path
+                if (dist[currVer] + adjNode->weight < dist[adjNode->vertex])
                 {
-                    dist[temp->vertex] = dist[v] +  cost;
-                    path[temp->vertex] = v;
+                    dist[adjNode->vertex] = dist[currVer] +  adjNode->weight;
+                    path[adjNode->vertex] = currVer;
                 }
             }
-            temp = array[v].getNext();
+            adjNode = array[currVer].getNext();
         }
-        done[v] =  true;
+        done[currVer] =  true; // all neighbours have been checked
 
         d = INFINITY;
         //find smallest undone distance vertex
@@ -164,12 +160,14 @@ void Digraph::pwsssp(int s)
         {
             if (!done[i] && dist[i] < d)
             {
-                d = dist[i];
-                v = i;
+                d = dist[i]; // will become smallest possible
+                currVer = i;
             }
         }
+        if (d == INFINITY)
+            break;
 
-    }while(d != INFINITY);
+    }
 
     // *** TODO ***
 }
@@ -214,12 +212,9 @@ void Digraph::printPath(int t) const
          return;
     }
 
-    if (path[t] == 0)
-        cout << " " << t;
-
     // RECURSION <3
     printPath(path[t]);
-    std::cout << " " << t << " ";
+    std::cout << " " << t;
 
 }
 
