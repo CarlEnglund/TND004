@@ -4,7 +4,7 @@
 * file for students                          *
 **********************************************/
 
-
+#include <vector>
 #include <iostream>
 #include <iomanip>
 #include <cassert>
@@ -58,7 +58,59 @@ void Graph::removeEdge(int u, int v)
 // Prim's minimum spanning tree algorithm
 void Graph::mstPrim() const
 {
-    // *** TODO ***
+    vector<Edge> edges;
+    bool done[size+1];
+
+    for(int i = 0; i <= size; i++)
+    {
+      done[i] = false;
+    }
+
+    //Starting vertex
+    int s = 1;
+    done[s] = true; 
+    Node *edgeNodes = array[s].getFirst();
+    while(true)
+    {
+      Edge smallest = Edge(0, 0, INFINITY);
+      Node *res = nullptr;
+      for (int j = 0; j <= size; j++)
+      {
+        if(!done[j])
+          continue;
+
+        edgeNodes = array[j].getFirst();
+
+        while(edgeNodes)
+        {
+          Edge w = Edge(j, edgeNodes->vertex, edgeNodes->weight);
+
+          if(!done[edgeNodes->vertex] && w < smallest)
+          {
+            smallest = w;
+            s = w.tail;
+            res = edgeNodes;
+          }
+          edgeNodes = edgeNodes->next;
+        }
+
+      }
+
+      //Exit if we found next vertex?
+      if(!res)
+        break;
+
+      edges.push_back(smallest);
+      cout << " " << s;
+      done[s] = true;
+    }
+
+    for(Edge e : edges)
+    {
+      if(e.head > 0)
+        cout << e << endl;
+    }
+
 }
 
 // Kruskal's minimum spanning tree algorithm
