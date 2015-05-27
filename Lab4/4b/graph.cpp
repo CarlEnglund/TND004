@@ -127,7 +127,6 @@ void Graph::mstKruskal() const
     //kruskals maintains a collection of single-node trees
     //adding edge = merge two trees into one
 
-    int totWeight = 0;
     //Init heap and Dsets
     Heap <Edge>H;
     DSets D(size);
@@ -169,7 +168,6 @@ void Graph::mstKruskal() const
 
     }
     cout << endl << "Total weight = " << totWeight << endl;
-    
     
   
 }
