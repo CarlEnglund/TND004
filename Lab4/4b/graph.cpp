@@ -169,9 +169,7 @@ void Graph::mstKruskal() const
 
     }
     cout << endl << "Total weight = " << totWeight << endl;
-
-    cout << endl << "Total weight = " << totWeight << endl;
-
+    
     
   
 }
