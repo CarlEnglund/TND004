@@ -64,6 +64,8 @@ void Digraph::uwsssp(int s)
     //queue: first in, first out. jämför med stack: last in, first out.
     //enqueue: insertion/push, dequeue: deletion/pop
     //dvs: insertion i slutet, removal i början.
+    //breadth first search = operate in layers.
+    //first check dist = 1 from start, then 2 etc.
     if (s < 1 || s > size)
     {
          cout << "\nERROR: expected source s in range 1.." << size << " !" << endl;
@@ -100,7 +102,7 @@ void Digraph::uwsssp(int s)
                 path[adjNode->vertex] = v;
                 Q.enqueue(adjNode->vertex);
             }
-            adjNode = adjNode->next;
+            adjNode = array[v].getNext();
         }
     }
 
