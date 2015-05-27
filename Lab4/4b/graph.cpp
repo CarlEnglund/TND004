@@ -94,8 +94,6 @@ void Graph::mstPrim() const
             adjNode = array[currVer].getNext();
         }
         done[currVer] = true; //all neighbours have been checked
-        
-
 
         d = INFINITY;
         //find smallest undone distance vertex
@@ -125,41 +123,51 @@ void Graph::mstPrim() const
 // Kruskal's minimum spanning tree algorithm
 void Graph::mstKruskal() const
 {
+
+    //kruskals maintains a collection of single-node trees
+    //adding edge = merge two trees into one
+
+    int totWeight = 0;
     //Init heap and Dsets
     Heap <Edge>H;
     DSets D(size);
 
 
+
     //Occupy the heap.
     for (int i = 0; i < size; i++)
     {
-     Node *n = array[i].getFirst();
-     while(n)
-     {
-      if(i < n->vertex)
-      {
-        Edge e(i, n->vertex, n->weight);
-        H.insert(e);
-      }
-      n = n->next;
-     } 
+        Node *n = array[i].getFirst();
+        while(n) //while has neighbour
+        {
+            if(i < n->vertex)
+            {
+                Edge e(i, n->vertex, n->weight);
+                H.insert(e);
+            }
+            n = array[i].getNext();
+        } 
      
     }
 
     int edgesAccepted = 0;
-
     while(edgesAccepted < size-1)
     {
-       Edge b = H.deleteMin();
-      if(D.find(b.head) != D.find(b.tail))
-      {
-        D.join(D.find(b.head), D.find(b.tail));
-        edgesAccepted++;
-        cout << b << endl;
-      } 
+        //Finds edge with lowest cost, see slides on lecture 14
+        Edge b = H.deleteMin();
+        //Does head and tail belong to the same tree? to avoid cycles!
+        if(D.find(b.head) != D.find(b.tail)) 
+        {
+            //Merge two different trees
+            D.join(D.find(b.head), D.find(b.tail));
+            edgesAccepted++;
+            totWeight += b.weight;
+            cout << b << endl;
+        } 
 
 
     }
+    cout << endl << "Total weight = " << totWeight << endl;
 
     
   

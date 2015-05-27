@@ -46,6 +46,7 @@ void DSets::init()
 // i.e. join trees with roots r and s
 void DSets::join(int r, int s)
 {
+    //union by size
     assert(r != s);
     assert(r >= 1 && r <= size);
     assert(s >= 1 && s <= size);
@@ -69,6 +70,7 @@ void DSets::join(int r, int s)
 // i.e. return root of tree for x
 int DSets::find(int x)
 {
+    //p 325 book. eller 379...
     assert(x >= 1 && x <= size);
 
     // simple find
@@ -77,7 +79,7 @@ int DSets::find(int x)
         return x;
     }
     else
-    {   //p 325 book.
+    {   
         return array[x] = find(array[x]);
     }
 }
